@@ -1,0 +1,76 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+// Base Class
+class Person {
+protected:
+    char name[50];
+    int age;
+
+public:
+    Person(const char* n, int a) {
+        strcpy(name, n);
+        age = a;
+        cout << "Person Constructor called\n";
+    }
+
+    void displayPerson() {
+        cout << "Name: " << name << ", Age: " << age << endl;
+    }
+};
+
+// Derived Class 1
+class Student : public Person {
+protected:
+    int roll;
+
+public:
+    Student(const char* n, int a, int r) : Person(n, a) {
+        roll = r;
+        cout << "Student Constructor called\n";
+    }
+
+    void displayStudent() {
+        cout << "Roll Number: " << roll << endl;
+    }
+};
+
+// Derived Class 2 (Multilevel)
+class Result : public Student {
+private:
+    int marks[3];
+
+public:
+    Result(const char* n, int a, int r, int m1, int m2, int m3)
+        : Student(n, a, r) {
+        marks[0] = m1;
+        marks[1] = m2;
+        marks[2] = m3;
+        cout << "Result Constructor called\n";
+    }
+
+    int calculateTotal() {
+        return marks[0] + marks[1] + marks[2];
+    }
+
+    float calculateAverage() {
+        return calculateTotal() / 3.0;
+    }
+
+    void displayResult() {
+        displayPerson();
+        displayStudent();
+        cout << "Marks: " << marks[0] << ", " << marks[1] << ", " << marks[2] << endl;
+        cout << "Total: " << calculateTotal() << endl;
+        cout << "Average: " << calculateAverage() << endl;
+    }
+};
+
+int main() {
+    Result r("Hari", 20, 101, 85, 90, 88);
+    cout << "\n--- Student Result ---\n";
+    r.displayResult();
+
+    return 0;
+}
