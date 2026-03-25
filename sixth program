@@ -1,0 +1,85 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+// Base Class
+class Person {
+protected:
+    char name[50];
+
+public:
+    Person(const char* n) {
+        strcpy(name, n);
+        cout << "Person Constructor called\n";
+    }
+
+    void displayPerson() {
+        cout << "Name: " << name << endl;
+    }
+};
+
+// Derived Class 1
+class Student : virtual public Person {
+protected:
+    int roll;
+
+public:
+    Student(const char* n, int r) : Person(n) {
+        roll = r;
+        cout << "Student Constructor called\n";
+    }
+
+    void displayStudent() {
+        cout << "Roll: " << roll << endl;
+    }
+};
+
+// Derived Class 2
+class Sports : virtual public Person {
+protected:
+    int sportsMarks;
+
+public:
+    Sports(const char* n, int sm) : Person(n) {
+        sportsMarks = sm;
+        cout << "Sports Constructor called\n";
+    }
+
+    void displaySports() {
+        cout << "Sports Marks: " << sportsMarks << endl;
+    }
+};
+
+// Hybrid Derived Class
+class Result : public Student, public Sports {
+private:
+    int academicMarks;
+
+public:
+    Result(const char* n, int r, int sm, int am)
+        : Person(n), Student(n, r), Sports(n, sm) {
+        academicMarks = am;
+        cout << "Result Constructor called\n";
+    }
+
+    int total() {
+        return sportsMarks + academicMarks;
+    }
+
+    void displayResult() {
+        displayPerson();
+        displayStudent();
+        displaySports();
+        cout << "Academic Marks: " << academicMarks << endl;
+        cout << "Total Marks: " << total() << endl;
+    }
+};
+
+int main() {
+    Result r("Hari", 101, 85, 90);
+
+    cout << "\n--- Hybrid Inheritance Output ---\n";
+    r.displayResult();
+
+    return 0;
+}
