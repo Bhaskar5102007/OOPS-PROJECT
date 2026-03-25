@@ -1,0 +1,98 @@
+#include <iostream>
+using namespace std;
+
+// Base Class
+class Vehicle {
+protected:
+    string name;
+
+public:
+    Vehicle(string n) {
+        name = n;
+        cout << "Vehicle Constructor called\n";
+    }
+
+    // Virtual function
+    virtual double fuelEfficiency() {
+        return 0; // default
+    }
+
+    // Virtual display
+    virtual void display() {
+        cout << "Vehicle: " << name << endl;
+        cout << "Efficiency: " << fuelEfficiency() << " km/l" << endl;
+    }
+
+    // Virtual destructor
+    virtual ~Vehicle() {
+        cout << "Vehicle Destructor called\n";
+    }
+};
+
+// Derived Class 1
+class Car : public Vehicle {
+private:
+    double petrolUsed, distance;
+
+public:
+    Car(double p, double d)
+        : Vehicle("Car"), petrolUsed(p), distance(d) {
+        cout << "Car Constructor called\n";
+    }
+
+    // Override
+    double fuelEfficiency() override {
+        return distance / petrolUsed;
+    }
+
+    void display() override {
+        Vehicle::display();
+        cout << "Type: Car\n";
+    }
+
+    ~Car() {
+        cout << "Car Destructor called\n";
+    }
+};
+
+// Derived Class 2
+class Bike : public Vehicle {
+private:
+    double petrolUsed, distance;
+
+public:
+    Bike(double p, double d)
+        : Vehicle("Bike"), petrolUsed(p), distance(d) {
+        cout << "Bike Constructor called\n";
+    }
+
+    // Override
+    double fuelEfficiency() override {
+        return distance / petrolUsed;
+    }
+
+    void display() override {
+        Vehicle::display();
+        cout << "Type: Bike\n";
+    }
+
+    ~Bike() {
+        cout << "Bike Destructor called\n";
+    }
+};
+
+int main() {
+    Vehicle* v1 = new Car(5, 250);   // 50 km/l
+    Vehicle* v2 = new Bike(3, 150);  // 50 km/l
+
+    cout << "\n--- Vehicle Details ---\n";
+
+    v1->display();
+    cout << endl;
+    v2->display();
+
+    delete v1;
+    delete v2;
+
+    return 0;
+}
