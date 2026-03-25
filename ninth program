@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+
+// Abstract Base Class
+class Payment {
+protected:
+    double amount;
+
+public:
+    Payment(double amt) {
+        amount = amt;
+        cout << "Payment Constructor called\n";
+    }
+
+    // Pure Virtual Function
+    virtual double processPayment() = 0;
+
+    // Normal function
+    virtual void display() {
+        cout << "Amount: " << amount << endl;
+    }
+
+    // Virtual Destructor
+    virtual ~Payment() {
+        cout << "Payment Destructor called\n";
+    }
+};
+
+// Derived Class 1
+class UPI : public Payment {
+public:
+    UPI(double amt) : Payment(amt) {
+        cout << "UPI Constructor called\n";
+    }
+
+    double processPayment() override {
+        return amount; // no extra charge
+    }
+
+    void display() override {
+        Payment::display();
+        cout << "Method: UPI\n";
+        cout << "Final Amount: " << processPayment() << endl;
+    }
+
+    ~UPI() {
+        cout << "UPI Destructor called\n";
+    }
+};
+
+// Derived Class 2
+class Card : public Payment {
+public:
+    Card(double amt) : Payment(amt) {
+        cout << "Card Constructor called\n";
+    }
+
+    double processPayment() override {
+        return amount + (amount * 0.02); // 2% charge
+    }
+
+    void display() override {
+        Payment::display();
+        cout << "Method: Card\n";
+        cout << "Final Amount: " << processPayment() << endl;
+    }
+
+    ~Card() {
+        cout << "Card Destructor called\n";
+    }
+};
+
+// Derived Class 3
+class NetBanking : public Payment {
+public:
+    NetBanking(double amt) : Payment(amt) {
+        cout << "NetBanking Constructor called\n";
+    }
+
+    double processPayment() override {
+        return amount + 10; // fixed charge
+    }
+
+    void display() override {
+        Payment::display();
+        cout << "Method: NetBanking\n";
+        cout << "Final Amount: " << processPayment() << endl;
+    }
+
+    ~NetBanking() {
+        cout << "NetBanking Destructor called\n";
+    }
+};
+
+int main() {
+    Payment* p1 = new UPI(1000);
+    Payment* p2 = new Card(1000);
+    Payment* p3 = new NetBanking(1000);
+
+    cout << "\n--- Payment Details ---\n";
+
+    p1->display();
+    cout << endl;
+
+    p2->display();
+    cout << endl;
+
+    p3->display();
+
+    delete p1;
+    delete p2;
+    delete p3;
+
+    return 0;
+}
