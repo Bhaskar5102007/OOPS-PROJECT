@@ -1,0 +1,103 @@
+#include <iostream>
+using namespace std;
+
+// Base Class
+class Employee {
+protected:
+    string name;
+    double baseSalary;
+
+public:
+    Employee(string n, double salary) {
+        name = n;
+        baseSalary = salary;
+        cout << "Employee Constructor called\n";
+    }
+
+    // Virtual function
+    virtual double calculateSalary() {
+        return baseSalary;
+    }
+
+    // Virtual display
+    virtual void display() {
+        cout << "Name: " << name << endl;
+        cout << "Salary: " << calculateSalary() << endl;
+    }
+
+    // Virtual destructor
+    virtual ~Employee() {
+        cout << "Employee Destructor called\n";
+    }
+};
+
+// Derived Class 1
+class Manager : public Employee {
+private:
+    double bonus;
+
+public:
+    Manager(string n, double salary, double b)
+        : Employee(n, salary), bonus(b) {
+        cout << "Manager Constructor called\n";
+    }
+
+    // Function overriding
+    double calculateSalary() override {
+        return baseSalary + bonus;
+    }
+
+    void display() override {
+        Employee::display();
+        cout << "Role: Manager\n";
+        cout << "Bonus: " << bonus << endl;
+    }
+
+    ~Manager() {
+        cout << "Manager Destructor called\n";
+    }
+};
+
+// Derived Class 2
+class Developer : public Employee {
+private:
+    int overtimeHours;
+    double rate;
+
+public:
+    Developer(string n, double salary, int hours, double r)
+        : Employee(n, salary), overtimeHours(hours), rate(r) {
+        cout << "Developer Constructor called\n";
+    }
+
+    // Function overriding
+    double calculateSalary() override {
+        return baseSalary + (overtimeHours * rate);
+    }
+
+    void display() override {
+        Employee::display();
+        cout << "Role: Developer\n";
+        cout << "Overtime Hours: " << overtimeHours << endl;
+    }
+
+    ~Developer() {
+        cout << "Developer Destructor called\n";
+    }
+};
+
+int main() {
+    Employee* e1 = new Manager("Hari", 50000, 10000);
+    Employee* e2 = new Developer("Ravi", 40000, 10, 500);
+
+    cout << "\n--- Employee Details ---\n";
+
+    e1->display();
+    cout << endl;
+    e2->display();
+
+    delete e1;
+    delete e2;
+
+    return 0;
+}
