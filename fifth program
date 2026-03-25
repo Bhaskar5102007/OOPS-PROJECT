@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+
+// Base Class 1
+class Teacher {
+protected:
+    int teacherID;
+
+public:
+    Teacher(int id) {
+        teacherID = id;
+        cout << "Teacher Constructor called\n";
+    }
+
+    void show() {
+        cout << "Teacher ID: " << teacherID << endl;
+    }
+};
+
+// Base Class 2
+class Sports {
+protected:
+    int sportsMarks;
+
+public:
+    Sports(int marks) {
+        sportsMarks = marks;
+        cout << "Sports Constructor called\n";
+    }
+
+    void show() {
+        cout << "Sports Marks: " << sportsMarks << endl;
+    }
+};
+
+// Derived Class
+class Student : public Teacher, public Sports {
+private:
+    int academicMarks;
+
+public:
+    Student(int tID, int sMarks, int aMarks)
+        : Teacher(tID), Sports(sMarks) {
+        academicMarks = aMarks;
+        cout << "Student Constructor called\n";
+    }
+
+    int totalMarks() {
+        return sportsMarks + academicMarks;
+    }
+
+    void display() {
+        // Resolving ambiguity using scope resolution
+        Teacher::show();
+        Sports::show();
+
+        cout << "Academic Marks: " << academicMarks << endl;
+        cout << "Total Marks: " << totalMarks() << endl;
+    }
+};
+
+int main() {
+    Student s(5001, 85, 90);
+
+    cout << "\n--- Student Details ---\n";
+    s.display();
+
+    return 0;
+}
