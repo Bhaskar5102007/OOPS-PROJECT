@@ -1,0 +1,96 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+// Abstract Base Class
+class Shape {
+protected:
+    string name;
+
+public:
+    Shape(string n) {
+        name = n;
+        cout << "Shape Constructor called\n";
+    }
+
+    // Pure Virtual Function
+    virtual double area() = 0;
+
+    // Virtual Function
+    virtual void display() {
+        cout << "Shape: " << name << endl;
+    }
+
+    // Virtual Destructor (important in abstract classes)
+    virtual ~Shape() {
+        cout << "Shape Destructor called\n";
+    }
+};
+
+// Derived Class 1
+class Rectangle : public Shape {
+private:
+    double length, width;
+
+public:
+    Rectangle(double l, double w)
+        : Shape("Rectangle"), length(l), width(w) {
+        cout << "Rectangle Constructor called\n";
+    }
+
+    double area() override {
+        return length * width;
+    }
+
+    void display() override {
+        Shape::display();
+        cout << "Length: " << length << ", Width: " << width << endl;
+        cout << "Area: " << area() << endl;
+    }
+
+    ~Rectangle() {
+        cout << "Rectangle Destructor called\n";
+    }
+};
+
+// Derived Class 2
+class Circle : public Shape {
+private:
+    double radius;
+
+public:
+    Circle(double r)
+        : Shape("Circle"), radius(r) {
+        cout << "Circle Constructor called\n";
+    }
+
+    double area() override {
+        return M_PI * radius * radius;
+    }
+
+    void display() override {
+        Shape::display();
+        cout << "Radius: " << radius << endl;
+        cout << "Area: " << area() << endl;
+    }
+
+    ~Circle() {
+        cout << "Circle Destructor called\n";
+    }
+};
+
+int main() {
+    Shape* s1 = new Rectangle(5, 3);
+    Shape* s2 = new Circle(4);
+
+    cout << "\n--- Shape Details ---\n";
+
+    s1->display();
+    cout << endl;
+    s2->display();
+
+    delete s1;
+    delete s2;
+
+    return 0;
+}
