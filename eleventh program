@@ -1,0 +1,88 @@
+#include <iostream>
+using namespace std;
+
+// Base Class
+class Resource {
+protected:
+    string name;
+
+public:
+    Resource(string n) {
+        name = n;
+        cout << "Resource Constructor called\n";
+    }
+
+    // Virtual function (for dynamic binding)
+    virtual void use() {
+        cout << "Using generic resource\n";
+    }
+
+    // Virtual Destructor
+    virtual ~Resource() {
+        cout << "Resource Destructor called for " << name << endl;
+    }
+};
+
+// Derived Class 1
+class File : public Resource {
+private:
+    int* data;
+
+public:
+    File(string n) : Resource(n) {
+        data = new int[5]; // dynamic memory
+        cout << "File Constructor called\n";
+    }
+
+    // Override
+    void use() override {
+        cout << "Reading/Writing File: " << name << endl;
+    }
+
+    ~File() {
+        cout << "File Destructor called for " << name << endl;
+        delete[] data; // free memory
+    }
+};
+
+// Derived Class 2
+class Network : public Resource {
+private:
+    char* buffer;
+
+public:
+    Network(string n) : Resource(n) {
+        buffer = new char[100];
+        cout << "Network Constructor called\n";
+    }
+
+    // Override
+    void use() override {
+        cout << "Transmitting Data via Network: " << name << endl;
+    }
+
+    ~Network() {
+        cout << "Network Destructor called for " << name << endl;
+        delete[] buffer;
+    }
+};
+
+int main() {
+    // Base class pointer → dynamic binding
+    Resource* r1 = new File("data.txt");
+    Resource* r2 = new Network("WiFi");
+
+    cout << "\n--- Using Resources ---\n";
+
+    // Dynamic binding happens here
+    r1->use();
+    r2->use();
+
+    cout << "\n--- Deleting Resources ---\n";
+
+    // Virtual destructor ensures proper cleanup
+    delete r1;
+    delete r2;
+
+    return 0;
+}
